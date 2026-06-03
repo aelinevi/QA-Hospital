@@ -1,0 +1,796 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>QA System — Rumah Sakit Sehat Selalu</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,600;0,9..144,700;1,9..144,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --cream: #F5F0E8;
+      --ink: #1A1612;
+      --rust: #C4522A;
+      --sage: #5A7A6A;
+      --gold: #C9A84C;
+      --mist: #E8E2D8;
+      --paper: #FAF7F2;
+      --shadow: rgba(26,22,18,0.08);
+    }
+
+    body {
+      background: var(--cream);
+      color: var(--ink);
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 300;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* ── Header ── */
+    header {
+      background: var(--ink);
+      color: var(--cream);
+      padding: 0 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 64px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      border-bottom: 2px solid var(--rust);
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .logo-icon {
+      width: 36px;
+      height: 36px;
+      background: var(--rust);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Fraunces', serif;
+      font-size: 1.1rem;
+      color: white;
+      font-weight: 700;
+    }
+
+    .logo-text {
+      font-family: 'Fraunces', serif;
+      font-size: 1rem;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+    }
+
+    .logo-sub {
+      font-size: 0.7rem;
+      opacity: 0.5;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    nav {
+      display: flex;
+      gap: 4px;
+    }
+
+    nav button {
+      background: transparent;
+      border: none;
+      color: var(--cream);
+      opacity: 0.5;
+      padding: 8px 16px;
+      cursor: pointer;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.85rem;
+      border-radius: 6px;
+      transition: all 0.2s;
+      letter-spacing: 0.03em;
+    }
+
+    nav button:hover, nav button.active {
+      opacity: 1;
+      background: rgba(255,255,255,0.08);
+    }
+
+    nav button.active {
+      background: var(--rust);
+      opacity: 1;
+    }
+
+    /* ── Main Layout ── */
+    main {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 3rem 2rem 5rem;
+    }
+
+    .page { display: none; }
+    .page.active { display: block; }
+
+    /* ── Hero Section ── */
+    .hero {
+      text-align: center;
+      margin-bottom: 3rem;
+      padding: 2rem 0;
+    }
+
+    .hero-tag {
+      display: inline-block;
+      font-size: 0.72rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--rust);
+      border: 1px solid var(--rust);
+      padding: 4px 12px;
+      border-radius: 20px;
+      margin-bottom: 1.5rem;
+    }
+
+    .hero h1 {
+      font-family: 'Fraunces', serif;
+      font-size: clamp(2.2rem, 5vw, 3.5rem);
+      font-weight: 700;
+      line-height: 1.1;
+      margin-bottom: 1rem;
+      letter-spacing: -0.02em;
+    }
+
+    .hero h1 em {
+      font-style: italic;
+      color: var(--rust);
+    }
+
+    .hero p {
+      color: rgba(26,22,18,0.55);
+      font-size: 1rem;
+      max-width: 480px;
+      margin: 0 auto;
+      line-height: 1.6;
+    }
+
+    /* ── QA Box ── */
+    .qa-box {
+      background: var(--paper);
+      border: 1px solid var(--mist);
+      border-radius: 16px;
+      padding: 2rem;
+      box-shadow: 0 4px 24px var(--shadow);
+      margin-bottom: 2rem;
+    }
+
+    .input-row {
+      display: flex;
+      gap: 12px;
+    }
+
+    .qa-input {
+      flex: 1;
+      background: var(--cream);
+      border: 1.5px solid var(--mist);
+      border-radius: 10px;
+      padding: 14px 18px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.95rem;
+      color: var(--ink);
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .qa-input:focus {
+      border-color: var(--rust);
+    }
+
+    .qa-input::placeholder { color: rgba(26,22,18,0.3); }
+
+    .ask-btn {
+      background: var(--rust);
+      color: white;
+      border: none;
+      border-radius: 10px;
+      padding: 14px 28px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.9rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s;
+      white-space: nowrap;
+      letter-spacing: 0.02em;
+    }
+
+    .ask-btn:hover { background: #a8431f; transform: translateY(-1px); }
+    .ask-btn:active { transform: translateY(0); }
+    .ask-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+
+    /* Sample questions */
+    .sample-qs {
+      margin-top: 1.2rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .sample-qs label {
+      font-size: 0.72rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: rgba(26,22,18,0.4);
+      width: 100%;
+      margin-bottom: 2px;
+    }
+
+    .sample-q {
+      background: transparent;
+      border: 1px solid var(--mist);
+      border-radius: 20px;
+      padding: 6px 14px;
+      font-size: 0.8rem;
+      color: rgba(26,22,18,0.6);
+      cursor: pointer;
+      transition: all 0.2s;
+      font-family: 'DM Sans', sans-serif;
+    }
+
+    .sample-q:hover {
+      border-color: var(--rust);
+      color: var(--rust);
+    }
+
+    /* ── Answer Card ── */
+    .answer-card {
+      background: var(--paper);
+      border-left: 3px solid var(--rust);
+      border-radius: 0 12px 12px 0;
+      padding: 1.5rem 1.8rem;
+      margin-bottom: 1.5rem;
+      box-shadow: 0 2px 16px var(--shadow);
+      animation: fadeUp 0.4s ease;
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(12px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .answer-label {
+      font-size: 0.7rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--rust);
+      margin-bottom: 0.8rem;
+    }
+
+    .answer-text {
+      font-size: 0.95rem;
+      line-height: 1.7;
+      color: var(--ink);
+      white-space: pre-wrap;
+    }
+
+    /* ── Sources ── */
+    .sources-section {
+      margin-top: 1.5rem;
+    }
+
+    .sources-title {
+      font-size: 0.72rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: rgba(26,22,18,0.4);
+      margin-bottom: 1rem;
+    }
+
+    .source-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 12px;
+    }
+
+    .source-card {
+      background: var(--cream);
+      border: 1px solid var(--mist);
+      border-radius: 10px;
+      padding: 1rem 1.2rem;
+      font-size: 0.82rem;
+      line-height: 1.5;
+    }
+
+    .source-card .reg-id {
+      font-family: 'Fraunces', serif;
+      font-weight: 600;
+      color: var(--rust);
+      font-size: 0.9rem;
+      margin-bottom: 0.4rem;
+    }
+
+    .source-card .field { color: rgba(26,22,18,0.5); font-size: 0.75rem; }
+    .source-card .value { color: var(--ink); font-weight: 500; }
+
+    .badge {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-size: 0.7rem;
+      font-weight: 500;
+    }
+
+    .badge-vip { background: var(--gold); color: white; }
+    .badge-lunas { background: var(--sage); color: white; }
+    .badge-pending { background: #e09a40; color: white; }
+    .badge-bpjs { background: #3a7abf; color: white; }
+
+    /* ── Loading ── */
+    .loading {
+      display: none;
+      text-align: center;
+      padding: 2rem;
+      color: rgba(26,22,18,0.4);
+    }
+
+    .loading.show { display: block; }
+
+    .dots span {
+      display: inline-block;
+      width: 7px;
+      height: 7px;
+      background: var(--rust);
+      border-radius: 50%;
+      margin: 0 3px;
+      animation: bounce 1.2s infinite ease-in-out;
+    }
+
+    .dots span:nth-child(2) { animation-delay: 0.2s; }
+    .dots span:nth-child(3) { animation-delay: 0.4s; }
+
+    @keyframes bounce {
+      0%, 80%, 100% { transform: scale(0.6); opacity: 0.4; }
+      40% { transform: scale(1); opacity: 1; }
+    }
+
+    /* ── Stats Page ── */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+
+    .stat-card {
+      background: var(--paper);
+      border: 1px solid var(--mist);
+      border-radius: 12px;
+      padding: 1.4rem;
+      box-shadow: 0 2px 12px var(--shadow);
+    }
+
+    .stat-card .stat-label {
+      font-size: 0.72rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: rgba(26,22,18,0.4);
+      margin-bottom: 0.5rem;
+    }
+
+    .stat-card .stat-value {
+      font-family: 'Fraunces', serif;
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--ink);
+    }
+
+    .stat-card .stat-sub {
+      font-size: 0.78rem;
+      color: rgba(26,22,18,0.4);
+      margin-top: 2px;
+    }
+
+    .stat-card.highlight .stat-value { color: var(--rust); }
+
+    .chart-section {
+      background: var(--paper);
+      border: 1px solid var(--mist);
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      box-shadow: 0 2px 12px var(--shadow);
+    }
+
+    .chart-title {
+      font-family: 'Fraunces', serif;
+      font-size: 1rem;
+      margin-bottom: 1.2rem;
+    }
+
+    .bar-item {
+      margin-bottom: 0.8rem;
+    }
+
+    .bar-label {
+      font-size: 0.8rem;
+      margin-bottom: 4px;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .bar-track {
+      height: 8px;
+      background: var(--mist);
+      border-radius: 4px;
+      overflow: hidden;
+    }
+
+    .bar-fill {
+      height: 100%;
+      background: var(--rust);
+      border-radius: 4px;
+      transition: width 0.8s ease;
+    }
+
+    /* ── Search Page ── */
+    .search-results { margin-top: 1.5rem; }
+
+    .result-row {
+      background: var(--paper);
+      border: 1px solid var(--mist);
+      border-radius: 10px;
+      padding: 1rem 1.3rem;
+      margin-bottom: 0.8rem;
+      display: grid;
+      grid-template-columns: 160px 1fr 1fr 120px;
+      gap: 1rem;
+      align-items: center;
+      font-size: 0.85rem;
+      animation: fadeUp 0.3s ease;
+    }
+
+    .result-row:hover {
+      border-color: var(--rust);
+    }
+
+    .result-id {
+      font-family: 'Fraunces', serif;
+      font-size: 0.8rem;
+      color: var(--rust);
+    }
+
+    .result-name { font-weight: 500; }
+    .result-meta { color: rgba(26,22,18,0.5); font-size: 0.78rem; }
+
+    /* ── Error ── */
+    .error-msg {
+      background: #fde8e0;
+      border: 1px solid var(--rust);
+      border-radius: 10px;
+      padding: 1rem 1.3rem;
+      color: var(--rust);
+      font-size: 0.88rem;
+      margin-bottom: 1rem;
+    }
+
+    /* API URL input */
+    .api-config {
+      background: var(--mist);
+      border-radius: 10px;
+      padding: 1rem 1.2rem;
+      margin-bottom: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.82rem;
+    }
+
+    .api-config label { color: rgba(26,22,18,0.5); white-space: nowrap; }
+
+    .api-config input {
+      flex: 1;
+      background: var(--paper);
+      border: 1px solid var(--mist);
+      border-radius: 6px;
+      padding: 6px 10px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.82rem;
+      color: var(--ink);
+      outline: none;
+    }
+
+    /* Responsive */
+    @media (max-width: 600px) {
+      .input-row { flex-direction: column; }
+      .result-row { grid-template-columns: 1fr 1fr; }
+      nav button span { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="logo">
+    <div class="logo-icon">RS</div>
+    <div>
+      <div class="logo-text">Sehat Selalu</div>
+      <div class="logo-sub">QA System</div>
+    </div>
+  </div>
+  <nav>
+    <button class="active" onclick="showPage('qa', this)"><span>💬 </span>Tanya Jawab</button>
+    <button onclick="showPage('search', this)"><span>🔍 </span>Cari Data</button>
+    <button onclick="showPage('stats', this)" id="statsBtn"><span>📊 </span>Statistik</button>
+  </nav>
+</header>
+
+<main>
+
+  <!-- Config bar -->
+  <div class="api-config">
+    <label>Backend URL:</label>
+    <input id="apiUrl" value="http://localhost:8000" placeholder="http://localhost:8000" />
+  </div>
+
+  <!-- ─── QA PAGE ─── -->
+  <div class="page active" id="page-qa">
+    <div class="hero">
+      <div class="hero-tag">Powered by OpenSearch + Claude AI</div>
+      <h1>Tanya apa saja tentang<br/><em>data rumah sakit</em></h1>
+      <p>Ajukan pertanyaan dalam bahasa Indonesia. Sistem akan mencari data relevan dan memberikan jawaban.</p>
+    </div>
+
+    <div class="qa-box">
+      <div class="input-row">
+        <input
+          class="qa-input"
+          id="questionInput"
+          type="text"
+          placeholder="Contoh: Berapa total biaya pasien VIP?"
+          onkeydown="if(event.key==='Enter') askQuestion()"
+        />
+        <button class="ask-btn" id="askBtn" onclick="askQuestion()">Tanya →</button>
+      </div>
+      <div class="sample-qs">
+        <label>Contoh pertanyaan:</label>
+        <button class="sample-q" onclick="setQ(this)">Siapa pasien VIP terbaru?</button>
+        <button class="sample-q" onclick="setQ(this)">Daftar layanan Tim Onkologi</button>
+        <button class="sample-q" onclick="setQ(this)">Pasien yang ditangani Dr. Andi</button>
+        <button class="sample-q" onclick="setQ(this)">Berapa total biaya operasi patah tulang?</button>
+        <button class="sample-q" onclick="setQ(this)">Registrasi dengan BPJS bulan Desember</button>
+      </div>
+    </div>
+
+    <div class="loading" id="loading">
+      <div class="dots"><span></span><span></span><span></span></div>
+      <p style="margin-top:12px;font-size:0.85rem;">Mencari data & memproses jawaban...</p>
+    </div>
+
+    <div id="answerArea"></div>
+  </div>
+
+  <!-- ─── SEARCH PAGE ─── -->
+  <div class="page" id="page-search">
+    <div class="hero" style="margin-bottom:2rem">
+      <h1 style="font-size:2rem">Cari <em>Data</em> Registrasi</h1>
+      <p>Cari berdasarkan nama pasien, dokter, layanan, atau ID registrasi.</p>
+    </div>
+
+    <div class="qa-box">
+      <div class="input-row">
+        <input
+          class="qa-input"
+          id="searchInput"
+          type="text"
+          placeholder="Nama pasien, dokter, layanan..."
+          onkeydown="if(event.key==='Enter') doSearch()"
+        />
+        <button class="ask-btn" onclick="doSearch()">Cari →</button>
+      </div>
+    </div>
+
+    <div class="loading" id="searchLoading">
+      <div class="dots"><span></span><span></span><span></span></div>
+    </div>
+
+    <div class="search-results" id="searchResults"></div>
+  </div>
+
+  <!-- ─── STATS PAGE ─── -->
+  <div class="page" id="page-stats">
+    <div class="hero" style="margin-bottom:2rem">
+      <h1 style="font-size:2rem">Statistik <em>Rumah Sakit</em></h1>
+    </div>
+    <div id="statsContent">
+      <p style="text-align:center;opacity:0.4;padding:2rem">Memuat statistik...</p>
+    </div>
+  </div>
+
+</main>
+
+<script>
+  const getApiUrl = () => document.getElementById('apiUrl').value.replace(/\/$/, '');
+
+  function showPage(name, btn) {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
+    document.getElementById('page-' + name).classList.add('active');
+    btn.classList.add('active');
+    if (name === 'stats') loadStats();
+  }
+
+  function setQ(btn) {
+    document.getElementById('questionInput').value = btn.textContent;
+  }
+
+  async function askQuestion() {
+    const q = document.getElementById('questionInput').value.trim();
+    if (!q) return;
+
+    const btn = document.getElementById('askBtn');
+    btn.disabled = true;
+    btn.textContent = '...';
+    document.getElementById('loading').classList.add('show');
+    document.getElementById('answerArea').innerHTML = '';
+
+    try {
+      const res = await fetch(getApiUrl() + '/api/ask', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ question: q })
+      });
+
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      const data = await res.json();
+
+      let sourcesHtml = '';
+      if (data.sources && data.sources.length > 0) {
+        const cards = data.sources.map(s => {
+          const dokter = (s.dokter_terlibat || []).map(d => d.nama).join(', ');
+          const vipBadge = s.is_vip ? '<span class="badge badge-vip">VIP</span> ' : '';
+          const statusBadge = s.status_pembayaran === 'Lunas'
+            ? '<span class="badge badge-lunas">Lunas</span>'
+            : '<span class="badge badge-pending">Pending</span>';
+          const bpjsBadge = s.metode_pembayaran_awal === 'BPJS'
+            ? '<span class="badge badge-bpjs">BPJS</span>'
+            : '';
+          return `<div class="source-card">
+            <div class="reg-id">${s.id_registrasi}</div>
+            <div>${vipBadge}${statusBadge} ${bpjsBadge}</div>
+            <div style="margin-top:6px"><span class="field">Pasien: </span><span class="value">${s.nama_pasien}</span></div>
+            <div><span class="field">Tim: </span><span class="value">${s.nama_tim || '-'}</span></div>
+            <div><span class="field">Dokter: </span><span class="value">${dokter || '-'}</span></div>
+            <div><span class="field">Biaya: </span><span class="value">Rp ${(s.total_biaya || 0).toLocaleString('id-ID')}</span></div>
+          </div>`;
+        }).join('');
+
+        sourcesHtml = `<div class="sources-section">
+          <div class="sources-title">Data Sumber (${data.total_sources} dokumen)</div>
+          <div class="source-cards">${cards}</div>
+        </div>`;
+      }
+
+      document.getElementById('answerArea').innerHTML = `
+        <div class="answer-card">
+          <div class="answer-label">Jawaban</div>
+          <div class="answer-text">${escHtml(data.answer)}</div>
+        </div>
+        ${sourcesHtml}
+      `;
+    } catch (err) {
+      document.getElementById('answerArea').innerHTML = `
+        <div class="error-msg">
+          ⚠️ Gagal terhubung ke backend: ${escHtml(err.message)}<br/>
+          <small>Pastikan server berjalan di ${getApiUrl()}</small>
+        </div>`;
+    } finally {
+      btn.disabled = false;
+      btn.textContent = 'Tanya →';
+      document.getElementById('loading').classList.remove('show');
+    }
+  }
+
+  async function doSearch() {
+    const q = document.getElementById('searchInput').value.trim();
+    if (!q) return;
+    document.getElementById('searchLoading').classList.add('show');
+    document.getElementById('searchResults').innerHTML = '';
+
+    try {
+      const res = await fetch(getApiUrl() + `/api/search?q=${encodeURIComponent(q)}&size=20`);
+      const data = await res.json();
+
+      if (!data.results || data.results.length === 0) {
+        document.getElementById('searchResults').innerHTML = '<p style="opacity:0.4;text-align:center;padding:2rem">Tidak ada hasil ditemukan.</p>';
+        return;
+      }
+
+      const rows = data.results.map(s => {
+        const dokter = (s.dokter_terlibat || []).map(d => d.nama).join(', ') || '-';
+        return `<div class="result-row">
+          <div><div class="result-id">${s.id_registrasi}</div><div class="result-meta">${(s.tanggal_registrasi || '').slice(0,10)}</div></div>
+          <div><div class="result-name">${s.nama_pasien}</div><div class="result-meta">${s.id_pasien}</div></div>
+          <div><div>${s.nama_tim || '-'}</div><div class="result-meta">${dokter}</div></div>
+          <div style="text-align:right"><div style="font-weight:500">Rp ${(s.total_biaya||0).toLocaleString('id-ID')}</div>
+          <div>${s.status_pembayaran === 'Lunas' ? '<span class="badge badge-lunas">Lunas</span>' : '<span class="badge badge-pending">Pending</span>'}</div></div>
+        </div>`;
+      }).join('');
+
+      document.getElementById('searchResults').innerHTML = `
+        <p style="font-size:0.8rem;opacity:0.5;margin-bottom:1rem">${data.total} hasil untuk "<strong>${escHtml(q)}</strong>"</p>
+        ${rows}`;
+    } catch (err) {
+      document.getElementById('searchResults').innerHTML = `<div class="error-msg">⚠️ ${escHtml(err.message)}</div>`;
+    } finally {
+      document.getElementById('searchLoading').classList.remove('show');
+    }
+  }
+
+  async function loadStats() {
+    document.getElementById('statsContent').innerHTML = '<p style="text-align:center;opacity:0.4;padding:2rem">Memuat...</p>';
+    try {
+      const res = await fetch(getApiUrl() + '/api/stats');
+      const d = await res.json();
+
+      const totalPendapatan = (d.total_pendapatan || 0).toLocaleString('id-ID');
+      const pembayaran = d.metode_pembayaran || {};
+      const perTim = d.per_tim || {};
+
+      const maxTim = Math.max(...Object.values(perTim), 1);
+      const timBars = Object.entries(perTim).sort((a,b) => b[1]-a[1]).map(([k,v]) => `
+        <div class="bar-item">
+          <div class="bar-label"><span>${k}</span><span>${v}</span></div>
+          <div class="bar-track"><div class="bar-fill" style="width:${(v/maxTim*100).toFixed(1)}%"></div></div>
+        </div>`).join('');
+
+      const maxPembayaran = Math.max(...Object.values(pembayaran), 1);
+      const pembBars = Object.entries(pembayaran).map(([k,v]) => `
+        <div class="bar-item">
+          <div class="bar-label"><span>${k}</span><span>${v}</span></div>
+          <div class="bar-track"><div class="bar-fill" style="width:${(v/maxPembayaran*100).toFixed(1)}%;background:var(--sage)"></div></div>
+        </div>`).join('');
+
+      document.getElementById('statsContent').innerHTML = `
+        <div class="stats-grid">
+          <div class="stat-card highlight">
+            <div class="stat-label">Total Registrasi</div>
+            <div class="stat-value">${(d.total_registrasi || 0).toLocaleString()}</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Pasien Unik</div>
+            <div class="stat-value">${(d.total_pasien_unik || 0).toLocaleString()}</div>
+          </div>
+          <div class="stat-card highlight">
+            <div class="stat-label">Total Pendapatan</div>
+            <div class="stat-value" style="font-size:1.3rem">Rp ${totalPendapatan}</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Pasien VIP</div>
+            <div class="stat-value">${d.pasien_vip || 0}</div>
+          </div>
+        </div>
+
+        <div class="chart-section">
+          <div class="chart-title">Registrasi per Tim Medis</div>
+          ${timBars}
+        </div>
+
+        <div class="chart-section">
+          <div class="chart-title">Metode Pembayaran</div>
+          ${pembBars}
+        </div>
+      `;
+    } catch (err) {
+      document.getElementById('statsContent').innerHTML = `<div class="error-msg">⚠️ ${escHtml(err.message)}</div>`;
+    }
+  }
+
+  function escHtml(str) {
+    return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  }
+</script>
+</body>
+</html>
